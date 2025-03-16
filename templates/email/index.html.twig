@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Лента писем{% endblock %}
+
+{% block body %}
+    <div class="container-sm">
+        <div class="row">
+            <h3><a href="{{ path('email_list') }}">КВ Пейджер</a></h3>
+        </div>
+        <div class="row">
+            {% for email in emails %}
+                <div class="shadow p-3 mb-5 bg-body rounded">
+                    <h5>{{ email.subject }} <span
+                                class="badge bg-secondary">{{ email.receivedAt|date('d.m.Y H:i') }}</span></h5>
+                    <p>{{ email.body }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    {% if currentPage > 1 %}
+                        <a href="{{ path('email_list', {page: currentPage - 1}) }}">Предыдущая</a>
+                    {% endif %}
+
+                    {% for i in 1..totalPages %}
+                        {% if i == currentPage %}
+                            <strong>{{ i }}</strong>
+                        {% else %}
+                            <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if currentPage < totalPages %}
+                        <a href="{{ path('email_list', {page: currentPage + 1}) }}">Следующая</a>
+                    {% endif %}
+
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Найти" aria-label="Найти">
+                        <button class="btn btn-outline-success" type="submit">Найти</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
