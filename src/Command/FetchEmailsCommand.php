@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'pager:fetch-emails',
-    description: 'Fetches emails from mail.ru server',
+    description: 'Fetches emails from mail server',
 )]
 class FetchEmailsCommand extends Command
 {
@@ -74,16 +74,19 @@ class FetchEmailsCommand extends Command
             $this->entityManager->persist($emailEntity);
             $progressBar->advance();
 
-            // Опционально: удалить письмо после обработки
-            // imap_delete($mailbox, $emailId);
+            if ($_ENV['IMAP_DELETE']) {
+                imap_delete($mailbox, $emailId);
+            }
         }
 
         $this->entityManager->flush();
-        // imap_expunge($mailbox); // Подтвердить удаление, если используешь imap_delete
+        if ($_ENV['IMAP_DELETE']) {
+            imap_expunge($mailbox);
+        }
 
         imap_close($mailbox);
         $progressBar->finish();
-        $io->success('Письма успешно загружены!');
+        $io->success('Сообщения успешно загружены!');
 
         return Command::SUCCESS;
     }
