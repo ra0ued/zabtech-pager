@@ -14,28 +14,28 @@ class EmailController extends AbstractController
     #[Route('/', name: 'email_list')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        $limit = 10; // Количество писем на странице
+        $messageLimit = 10;
         $page = $request->query->getInt('page', 1);
-        $offset = ($page - 1) * $limit;
+        $offset = ($page - 1) * $messageLimit;
 
         $repository = $em->getRepository(Email::class);
 
-        $totalEmails = $repository->createQueryBuilder('e')
+        $totalMessages = $repository->createQueryBuilder('e')
             ->select('count(e.id)')
             ->getQuery()
             ->getSingleScalarResult();
 
-        $emails = $repository->createQueryBuilder('e')
+        $messages = $repository->createQueryBuilder('e')
             ->orderBy('e.receivedAt', 'DESC')
             ->setFirstResult($offset)
-            ->setMaxResults($limit)
+            ->setMaxResults($messageLimit)
             ->getQuery()
             ->getResult();
 
-        $totalPages = ceil($totalEmails / $limit);
+        $totalPages = ceil($totalMessages / $messageLimit);
 
         return $this->render('email/index.html.twig', [
-            'emails' => $emails,
+            'messages' => $messages,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]);

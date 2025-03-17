@@ -8,31 +8,67 @@
             <h3><a href="{{ path('email_list') }}">HF Pager</a></h3>
         </div>
         <div class="row">
-            {% for email in emails %}
+            {% for message in messages %}
                 <div class="shadow p-3 mb-5 bg-body rounded">
-                    <h5>{{ email.subject }} <span
-                                class="badge bg-secondary">{{ email.receivedAt|date('d.m.Y H:i') }}</span></h5>
-                    <p>{{ email.body }}</p>
+                    <h5>
+                        {{ message.subject }}
+                        <span class="badge bg-secondary">{{ message.receivedAt|date('d.m.Y H:i') }}</span>
+                    </h5>
+                    <p>{{ message.body }}</p>
                 </div>
             {% endfor %}
         </div>
         <div class="row">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    {% if currentPage > 1 %}
-                        <a href="{{ path('email_list', {page: currentPage - 1}) }}">Предыдущая</a>
-                    {% endif %}
+                    {% if totalPages > 1 %}
 
-                    {% for i in 1..totalPages %}
-                        {% if i == currentPage %}
-                            <strong>{{ i }}</strong>
-                        {% else %}
-                            <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                        {# the number of first and last pages to be displayed #}
+                        {% set extremePagesLimit = 3 %}
+
+                        {# the number of pages that are displayed around the active page #}
+                        {% set nearbyPagesLimit = 2 %}
+
+                        {% if currentPage > 1 %}
+                            <a href="{{ path('email_list', {page: currentPage - 1}) }}">Предыдущая</a>
+
+                            {% for i in range(1, extremePagesLimit) %}
+                                {% if i < currentPage - nearbyPagesLimit %}
+                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if extremePagesLimit + 1 < currentPage - nearbyPagesLimit %}
+                                <span>...</span>
+                            {% endif %}
+
+                            {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) %}
+                                {% if i > 0 %}
+                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
-                    {% endfor %}
+                        <strong>{{ currentPage }}</strong>
 
-                    {% if currentPage < totalPages %}
-                        <a href="{{ path('email_list', {page: currentPage + 1}) }}">Следующая</a>
+                        {% if currentPage < totalPages %}
+                            {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) %}
+                                {% if i <= totalPages %}
+                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if  (totalPages - extremePagesLimit) > (currentPage + nearbyPagesLimit) %}
+                                <span>...</span>
+                            {% endif %}
+
+                            {% for i in range(totalPages - extremePagesLimit+1, totalPages) %}
+                                {% if i > currentPage + nearbyPagesLimit %}
+                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            <a href="{{ path('email_list', {page: currentPage + 1}) }}">Следующая</a>
+                        {% endif %}
                     {% endif %}
 
                     <form class="d-flex">
