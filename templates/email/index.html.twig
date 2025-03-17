@@ -5,7 +5,9 @@
 {% block body %}
     <div class="container-sm">
         <div class="row">
-            <h3><a href="{{ path('email_list') }}">HF Pager</a></h3>
+            <div class="bg-white p-5 text-center">
+                <h3><a href="{{ path('email_list') }}" class="link-dark">HF Pager</a></h3>
+            </div>
         </div>
         <div class="row">
             {% for message in messages %}
