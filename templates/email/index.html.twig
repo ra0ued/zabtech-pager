@@ -71,10 +71,10 @@
                         {% endif %}
                     {% endif %}
 
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Найти" aria-label="Найти">
-                        <button class="btn btn-outline-success" type="submit">Найти</button>
-                    </form>
+                    {{ form_start(searchForm, {'method': 'POST', attr: {'class': 'd-flex'}}) }}
+                    {{ form_widget(searchForm.keyword) }}
+                    {{ form_widget(searchForm.search) }}
+                    {{ form_end(searchForm) }}
                 </div>
             </nav>
         </div>

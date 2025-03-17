@@ -11,33 +11,45 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EmailRepository extends ServiceEntityRepository
 {
+    public const MESSAGES_PER_PAGE = 10;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Email::class);
     }
 
-//    /**
-//     * @return Email[] Returns an array of Email objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param int $page
+     * @return mixed
+     */
+    public function getAllMessages(int $page): mixed
+    {
+        $offset = ($page - 1) * self::MESSAGES_PER_PAGE;
 
-//    public function findOneBySomeField($value): ?Email
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.receivedAt', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults(self::MESSAGES_PER_PAGE)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param string $keyword
+     * @return array
+     */
+    public function findBySubject(string $keyword = ''): array
+    {
+        $qb = $this->createQueryBuilder('m');
+
+        return $qb
+            ->where($qb->expr()->like('m.subject', ':keyword'))
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->orderBy('m.receivedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
