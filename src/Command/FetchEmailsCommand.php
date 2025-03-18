@@ -69,7 +69,7 @@ class FetchEmailsCommand extends Command
             $emailEntity->setSubject($header->subject);
             $emailEntity->setSender($header->fromaddress);
             $emailEntity->setBody($body);
-            $emailEntity->setReceivedAt(new DateTimeImmutable($header->date));
+            $emailEntity->setReceivedAt(new DateTimeImmutable($header->date, new \DateTimeZone('Asia/Yakutsk')));
 
             $this->entityManager->persist($emailEntity);
             $progressBar->advance();
