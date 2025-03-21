@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EmailRepository extends ServiceEntityRepository
 {
-    public const MESSAGES_PER_PAGE = 10;
+    public const MESSAGES_PER_PAGE = 50;
 
     /**
      * @param ManagerRegistry $registry
