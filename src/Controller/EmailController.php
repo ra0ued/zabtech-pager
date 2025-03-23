@@ -66,7 +66,8 @@ class EmailController extends AbstractController
         $messages = $emailRepository->getFromSender($senderId);
 
         return $this->render('email/message.html.twig', [
-            'messages' => $messages
+            'messages' => $messages,
+            'currentId' => $senderId,
         ]);
     }
 }
