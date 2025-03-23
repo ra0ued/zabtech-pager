@@ -64,12 +64,18 @@ class FetchEmailsCommand extends Command
             $header = imap_headerinfo($mailbox, $emailId);
             $body = imap_fetchbody($mailbox, $emailId, 1);
             $body = mb_convert_encoding($body, "utf-8", "windows-1251");
+            $idFound = preg_match('/\d{4}/', $header->subject, $matches);
 
             $emailEntity = new Email();
             $emailEntity->setSubject($header->subject);
             $emailEntity->setSender($header->fromaddress);
             $emailEntity->setBody($body);
             $emailEntity->setReceivedAt(new DateTimeImmutable($header->date, new \DateTimeZone('Asia/Yakutsk')));
+
+            if ($idFound) {
+                $senderId = $matches[0] ?? null;
+                $emailEntity->setSenderId($senderId);
+            }
 
             $this->entityManager->persist($emailEntity);
             $progressBar->advance();

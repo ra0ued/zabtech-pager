@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HF Pager{% endblock %}
+
+{% block body %}
+    <div class="container-sm">
+        <div class="row">
+            <div class="bg-white p-5 text-center">
+                <h3><a href="{{ path('email_list') }}" class="link-dark">HF Pager</a></h3>
+            </div>
+        </div>
+        <div class="row">
+            {% for message in messages %}
+                <div class="shadow p-3 mb-5 bg-body rounded">
+                    <h5>
+                        {{ message.subject }}
+                        <span class="badge bg-secondary">{{ message.receivedAt|date('d.m.Y H:i', 'Asia/Yakutsk') }}</span>
+                    </h5>
+                    <p>{{ message.body }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

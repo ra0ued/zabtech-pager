@@ -40,6 +40,20 @@ class EmailRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int $senderId
+     * @return mixed
+     */
+    public function getFromSender(int $senderId): mixed
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.senderId = :senderId')
+            ->setParameter('senderId', $senderId)
+            ->orderBy('m.receivedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param string $keyword
      * @return array
      */

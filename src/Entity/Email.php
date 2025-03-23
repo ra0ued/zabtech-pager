@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\EmailRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,7 +27,10 @@ class Email
     private ?string $body = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $receivedAt = null;
+    private ?DateTimeImmutable $receivedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $senderId = null;
 
     public function getId(): ?int
     {
@@ -69,14 +73,26 @@ class Email
         return $this;
     }
 
-    public function getReceivedAt(): ?\DateTimeImmutable
+    public function getReceivedAt(): ?DateTimeImmutable
     {
         return $this->receivedAt;
     }
 
-    public function setReceivedAt(\DateTimeImmutable $receivedAt): static
+    public function setReceivedAt(DateTimeImmutable $receivedAt): static
     {
         $this->receivedAt = $receivedAt;
+
+        return $this;
+    }
+
+    public function getSenderId(): ?int
+    {
+        return $this->senderId;
+    }
+
+    public function setSenderId(?int $senderId): static
+    {
+        $this->senderId = $senderId;
 
         return $this;
     }

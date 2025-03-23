@@ -58,4 +58,15 @@ class EmailController extends AbstractController
             'searchForm' => $searchForm->createView(),
         ]);
     }
+
+    #[Route('/{sender_id}', name: 'show_email')]
+    public function message(Request $request, EmailRepository $emailRepository): Response
+    {
+        $senderId = (int)$request->get('sender_id', 0);
+        $messages = $emailRepository->getFromSender($senderId);
+
+        return $this->render('email/message.html.twig', [
+            'messages' => $messages
+        ]);
+    }
 }
