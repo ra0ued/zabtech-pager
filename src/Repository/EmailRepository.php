@@ -63,6 +63,7 @@ class EmailRepository extends ServiceEntityRepository
 
         return $qb
             ->where($qb->expr()->like('m.subject', ':keyword'))
+            ->orWhere($qb->expr()->like('m.body', ':keyword'))
             ->setParameter('keyword', '%' . $keyword . '%')
             ->orderBy('m.receivedAt', 'DESC')
             ->getQuery()
