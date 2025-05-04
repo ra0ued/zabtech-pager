@@ -21,7 +21,7 @@
                         {{ message.subject }}
                         <span class="badge bg-secondary">{{ message.receivedAt|date('d.m.Y H:i', 'Asia/Yakutsk') }}</span>
                     </h5>
-                    <p>{{ message.body }}</p>
+                    <p>{{ message.body|gps_to_link(app.request.server.get('MAP_SERVICE')) }}</p>
                 </div>
             {% endfor %}
         </div>
