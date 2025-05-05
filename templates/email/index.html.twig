@@ -3,7 +3,7 @@
 {% block title %}HF Pager{% endblock %}
 
 {% block body %}
-    <div class="container-sm">
+    <div class="container-md">
         <div class="row">
             <div class="bg-white p-5 text-center">
                 <h3><a href="{{ path('email_list') }}" class="link-dark">HF Pager</a></h3>
@@ -11,10 +11,10 @@
         </div>
         <div class="row">
             <nav class="navbar navbar-expand-lg justify-content-center bg-light">
-                    {{ form_start(searchForm, {'method': 'POST', attr: {'class': 'd-flex'}}) }}
-                    {{ form_widget(searchForm.keyword) }}
-                    {{ form_widget(searchForm.search) }}
-                    {{ form_end(searchForm) }}
+                {{ form_start(searchForm, {'method': 'POST', attr: {'class': 'd-flex'}}) }}
+                {{ form_widget(searchForm.keyword) }}
+                {{ form_widget(searchForm.search) }}
+                {{ form_end(searchForm) }}
             </nav>
         </div>
         <div class="row">
@@ -29,7 +29,7 @@
             {% endfor %}
         </div>
         <div class="row">
-            <nav class="navbar navbar-expand-lg navbar-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     {% if totalPages > 1 %}
 
@@ -40,11 +40,11 @@
                         {% set nearbyPagesLimit = 2 %}
 
                         {% if currentPage > 1 %}
-                            <a href="{{ path('email_list', {page: currentPage - 1}) }}">Предыдущая</a>
+                            <a class="nav-link" href="{{ path('email_list', {page: currentPage - 1}) }}">Предыдущая</a>
 
                             {% for i in range(1, extremePagesLimit) %}
                                 {% if i < currentPage - nearbyPagesLimit %}
-                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                    <a class="nav-link" href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
                                 {% endif %}
                             {% endfor %}
 
@@ -54,7 +54,7 @@
 
                             {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) %}
                                 {% if i > 0 %}
-                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                    <a class="nav-link" href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -63,7 +63,7 @@
                         {% if currentPage < totalPages %}
                             {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) %}
                                 {% if i <= totalPages %}
-                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                    <a class="nav-link" href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
                                 {% endif %}
                             {% endfor %}
 
@@ -73,11 +73,11 @@
 
                             {% for i in range(totalPages - extremePagesLimit+1, totalPages) %}
                                 {% if i > currentPage + nearbyPagesLimit %}
-                                    <a href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
+                                    <a class="nav-link" href="{{ path('email_list', {page: i}) }}">{{ i }}</a>
                                 {% endif %}
                             {% endfor %}
 
-                            <a href="{{ path('email_list', {page: currentPage + 1}) }}">Следующая</a>
+                            <a class="nav-link" href="{{ path('email_list', {page: currentPage + 1}) }}">Следующая</a>
                         {% endif %}
                     {% endif %}
                 </div>
