@@ -125,7 +125,7 @@ class GpsLinkExtension extends AbstractExtension
     {
         return match (strtolower($mapService)) {
             '2gis' => "https://2gis.com/geo/$longitude,$latitude?z=15",
-            'nakarte' => "https://nakarte.me/#m=15/$latitude/$longitude&l=O",
+            'nakarte' => "https://nakarte.me/#m=15/$latitude/$longitude&l=O/Wp&nktp=$latitude/$longitude/",
             'openstreetmap' => "https://www.openstreetmap.org/?mlat=$latitude&mlon=$longitude&zoom=15",
             'yandex' => "https://yandex.ru/maps/?ll=$longitude,$latitude&z=15",
             default => "https://www.google.com/maps?q=$latitude,$longitude&z=15",
