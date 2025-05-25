@@ -3,18 +3,21 @@
 {% block title %}HF Pager{% endblock %}
 
 {% block body %}
-    <div class="container-md">
+    <div class="container-lg">
         <div class="row">
             <div class="bg-white p-5 text-center">
                 <h3><a href="{{ path('email_list') }}" class="link-dark">HF Pager</a></h3>
             </div>
         </div>
         <div class="row">
-            <nav class="navbar navbar-expand-lg justify-content-center bg-light">
-                {{ form_start(searchForm, {'method': 'POST', attr: {'class': 'd-flex'}}) }}
-                {{ form_widget(searchForm.keyword) }}
-                {{ form_widget(searchForm.search) }}
-                {{ form_end(searchForm) }}
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="https://zabtech.ru">zabtech.ru</a>
+                    {{ form_start(searchForm, {'method': 'POST', attr: {'class': 'd-flex'}}) }}
+                    {{ form_widget(searchForm.keyword) }}
+                    {{ form_widget(searchForm.search) }}
+                    {{ form_end(searchForm) }}
+                </div>
             </nav>
         </div>
         <div class="row">
