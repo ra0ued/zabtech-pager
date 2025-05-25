@@ -21,10 +21,10 @@
             {% for message in messages %}
                 <div class="shadow p-3 mb-5 bg-body rounded">
                     <h5>
-                        {{ message.subject }}
+                        {{ message.subject|header }}
                         <span class="badge bg-secondary">{{ message.receivedAt|date('d.m.Y H:i', 'Asia/Yakutsk') }}</span>
                     </h5>
-                    <p>{{ message.body|gps_to_link(app.request.server.get('MAP_SERVICE')) }}</p>
+                    <p>{{ message.body|message_format|gps_to_link(app.request.server.get('MAP_SERVICE')) }}</p>
                 </div>
             {% endfor %}
         </div>
