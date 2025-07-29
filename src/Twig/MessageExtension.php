@@ -10,7 +10,7 @@ class MessageExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('message_format', [$this, 'hfMessageFormat'], ['is_safe' => ['html']]),
+            new TwigFilter('message_format', $this->hfMessageFormat(...), ['is_safe' => ['html']]),
         ];
     }
 

@@ -3,8 +3,11 @@
 namespace App\Command;
 
 use App\Entity\Email;
+use DateMalformedStringException;
 use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +35,7 @@ class FetchEmailsCommand extends Command
     }
 
     /**
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException|Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -70,7 +73,7 @@ class FetchEmailsCommand extends Command
             $emailEntity->setSubject($header->subject);
             $emailEntity->setSender($header->fromaddress);
             $emailEntity->setBody($body);
-            $emailEntity->setReceivedAt(new DateTimeImmutable($header->date, new \DateTimeZone('Asia/Yakutsk')));
+            $emailEntity->setReceivedAt(new DateTimeImmutable($header->date, new DateTimeZone('Asia/Yakutsk')));
 
             if ($idFound) {
                 $senderId = $matches[0] ?? null;
@@ -86,6 +89,7 @@ class FetchEmailsCommand extends Command
         }
 
         $this->entityManager->flush();
+
         if ($_ENV['IMAP_DELETE']) {
             imap_expunge($mailbox);
         }

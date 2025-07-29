@@ -10,7 +10,7 @@ class HeaderExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('header', [$this, 'parseHeader'], ['is_safe' => ['html']]),
+            new TwigFilter('header', $this->parseHeader(...), ['is_safe' => ['html']]),
         ];
     }
 
