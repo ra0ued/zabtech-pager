@@ -53,9 +53,18 @@ class FetchEmailsCommand extends Command
             return Command::FAILURE;
         }
 
-        $emails = imap_search($mailbox, 'FROM "' . $_ENV['EMAIL_FROM'] . '"');
+        $emails = [];
+        $emailAddressesFrom = explode(', ', $_ENV['EMAIL_FROM']);
 
-        if (!$emails) {
+        foreach ($emailAddressesFrom as $emailAddress) {
+            $emailFromServer = imap_search($mailbox, 'FROM "' . $emailAddress . '"');
+
+            if ($emailFromServer) {
+                $emails = array_merge($emails, $emailFromServer);
+            }
+        }
+
+        if (empty($emails)) {
             $io->info('Нет свежих сообщений от ' . $_ENV['EMAIL_FROM']);
 
             return Command::INVALID;
